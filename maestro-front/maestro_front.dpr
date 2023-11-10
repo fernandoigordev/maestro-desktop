@@ -1,14 +1,17 @@
-program maestro_front;
+program Maestro_Front;
 
 uses
-  Vcl.Forms,
-  View.Menu in 'View\View.Menu.pas' {FmViewMenu};
+  System.StartUpCopy,
+  FMX.Forms,
+  View.Menu in 'View\View.Menu.pas' {Form1},
+  View.Login in 'View\View.Login.pas' {ViewLogin},
+  Controller.Login in 'Controller\Controller.Login.pas',
+  Entity.Usuario in 'Entity\Entity.Usuario.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TFmViewMenu, FmViewMenu);
+  Application.CreateForm(TViewLogin, ViewLogin);
   Application.Run;
 end.
