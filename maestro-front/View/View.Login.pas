@@ -42,6 +42,8 @@ var
   ViewLogin: TViewLogin;
 
 implementation
+  uses
+    Utils.Globais;
 
 {$R *.fmx}
 
@@ -61,8 +63,9 @@ var
 begin
   LoginValidado := FControllerLogin.Logar(EditUsuario.Text, EditSenha.Text);
 
+  //Chamar tela de Menu
   if LoginValidado then
-    //Chamar tela de Menu
+    ShowMessage(Concat('Nome: ', UsuarioLogado.Nome, ' Cargo: ', UsuarioLogado.Cargo));
 end;
 
 end.
