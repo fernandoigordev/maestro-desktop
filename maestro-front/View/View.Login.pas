@@ -43,7 +43,7 @@ var
 
 implementation
   uses
-    Utils.Globais;
+    Entity.Usuario;
 
 {$R *.fmx}
 
@@ -65,7 +65,7 @@ begin
 
   //Chamar tela de Menu
   if LoginValidado then
-    ShowMessage(Concat('Nome: ', UsuarioLogado.Nome, ' Cargo: ', UsuarioLogado.Cargo));
+    ShowMessage(Concat('Nome: ', TEntityUsuario.GetUsuarioLogado.Nome, ' Cargo: ', TEntityUsuario.GetUsuarioLogado.Cargo));
 end;
 
 end.

@@ -5,15 +5,22 @@ uses
   Dto.Usuario;
 
 type
+  TUsuarioLogado = Record
+    Id: Integer;
+    Nome: String;
+    Cargo: String;
+    Foto: String;
+  End;
+
   TEntityUsuario = class
   private
+    Class var FUsuarioLogado: TUsuarioLogado;
     FId: Integer;
     FNome: String;
     FSenha: String;
-
-    //setusuariocorrente(dto)
     procedure SetUsuarioLogado(AUsuarioDto: TUsuarioDto);
   public
+    Class function GetUsuarioLogado: TUsuarioLogado;
     function Id(AId: Integer): TEntityUsuario;
     function Nome(ANome: String): TEntityUsuario;
     function Senha(ASenha: String): TEntityUsuario;
@@ -23,9 +30,14 @@ type
 
 implementation
 uses
-  Utils.Globais;
+  System.SysUtils, System.Hash, Utils.Globais, Repository.Usuario;
 
 { TEntityUsuario }
+
+class function TEntityUsuario.GetUsuarioLogado: TUsuarioLogado;
+begin
+  Result := FUsuarioLogado;
+end;
 
 function TEntityUsuario.Id(AId: Integer): TEntityUsuario;
 begin
@@ -36,20 +48,21 @@ end;
 function TEntityUsuario.Logar: Boolean;
 var
   UsuarioDto: TUsuarioDto;
+  RepositoryUsuario: TRepositoryUsuario;
+  HashSenha: String;
 begin
-  Result := False;
-  //Fazer processo de Login(Chamar um repository pra verificar se vai logar no banco)
-  UsuarioDto := TUsuarioDto.Create;
-          try
-    UsuarioDto.Id := 1;
-    UsuarioDto.Nome := 'Igor';
-    UsuarioDto.Cargo := 'Desenvolvedor';
-    UsuarioDto.Foto := 'xxxxxxxxxx';
-
-    SetUsuarioLogado(UsuarioDto);
-    Result := True;
+  RepositoryUsuario := TRepositoryUsuario.Create;
+  try
+    HashSenha := THashMD5.GetHashString(Self.FSenha);
+    UsuarioDto := RepositoryUsuario.Logar(Self.FNome, HashSenha);
+    try
+      SetUsuarioLogado(UsuarioDto);
+      Result := True;
+    finally
+      UsuarioDto.Free;
+    end;
   finally
-    UsuarioDto.Free;
+    RepositoryUsuario.Free;
   end;
 end;
 
@@ -67,10 +80,10 @@ end;
 
 procedure TEntityUsuario.SetUsuarioLogado(AUsuarioDto: TUsuarioDto);
 begin
-  Utils.Globais.UsuarioLogado.Id := AUsuarioDto.Id;
-  Utils.Globais.UsuarioLogado.Nome := AUsuarioDto.Nome;
-  Utils.Globais.UsuarioLogado.Cargo := AUsuarioDto.Cargo;
-  Utils.Globais.UsuarioLogado.Foto := AUsuarioDto.Foto;
+  FUsuarioLogado.Id := AUsuarioDto.Id;
+  FUsuarioLogado.Nome := AUsuarioDto.Nome;
+  FUsuarioLogado.Cargo := AUsuarioDto.Cargo;
+  FUsuarioLogado.Foto := AUsuarioDto.Foto;
 end;
 
 end.
