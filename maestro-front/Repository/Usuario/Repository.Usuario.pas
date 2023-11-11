@@ -2,10 +2,10 @@ unit Repository.Usuario;
 
 interface
 uses
-  Dto.Usuario;
+  Repository.Usuario.Interfaces, Dto.Usuario;
 
 type
-  TRepositoryUsuario = Class
+  TRepositoryUsuario = Class(TInterfacedObject, IRepositoryUsuario)
   private
 
   public

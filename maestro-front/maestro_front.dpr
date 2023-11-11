@@ -9,7 +9,8 @@ uses
   Entity.Usuario in 'Entity\Entity.Usuario.pas',
   Utils.Globais in 'Utils\Utils.Globais.pas',
   Dto.Usuario in 'Dto\Dto.Usuario.pas',
-  Repository.Usuario in 'Repository\Repository.Usuario.pas';
+  Repository.Usuario in 'Repository\Usuario\Repository.Usuario.pas',
+  Repository.Usuario.Interfaces in 'Repository\Usuario\Repository.Usuario.Interfaces.pas';
 
 {$R *.res}
 

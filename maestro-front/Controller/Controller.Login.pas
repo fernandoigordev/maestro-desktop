@@ -15,15 +15,17 @@ type
 implementation
 
 uses
-  Entity.Usuario;
+  Entity.Usuario, Repository.Usuario.Interfaces, Repository.Usuario;
 
 { TControllerLogin }
 
 function TControllerLogin.Logar(AUsuario, ASenha: String): Boolean;
 var
   EntityUsuario: TEntityUsuario;
+  RepositoryUsuario: IRepositoryUsuario;
 begin
-  EntityUsuario := TEntityUsuario.Create;
+  RepositoryUsuario := TRepositoryUsuario.Create;
+  EntityUsuario := TEntityUsuario.Create(RepositoryUsuario);
   try
     Result := EntityUsuario
                 .Nome(AUsuario)

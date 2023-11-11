@@ -2,7 +2,7 @@ unit Entity.Usuario;
 
 interface
 uses
-  Dto.Usuario;
+  Dto.Usuario, Repository.Usuario.Interfaces;
 
 type
   TUsuarioLogado = Record
@@ -15,24 +15,34 @@ type
   TEntityUsuario = class
   private
     Class var FUsuarioLogado: TUsuarioLogado;
+    FRepository: IRepositoryUsuario;
+
     FId: Integer;
     FNome: String;
     FSenha: String;
     procedure SetUsuarioLogado(AUsuarioDto: TUsuarioDto);
   public
     Class function GetUsuarioLogado: TUsuarioLogado;
+
     function Id(AId: Integer): TEntityUsuario;
     function Nome(ANome: String): TEntityUsuario;
     function Senha(ASenha: String): TEntityUsuario;
 
     function Logar: Boolean;
+
+    constructor Create(ARepositoryUsuario: IRepositoryUsuario);
   end;
 
 implementation
 uses
-  System.SysUtils, System.Hash, Utils.Globais, Repository.Usuario;
+  System.SysUtils, System.Hash;
 
 { TEntityUsuario }
+
+constructor TEntityUsuario.Create(ARepositoryUsuario: IRepositoryUsuario);
+begin
+  FRepository := ARepositoryUsuario;
+end;
 
 class function TEntityUsuario.GetUsuarioLogado: TUsuarioLogado;
 begin
@@ -48,21 +58,15 @@ end;
 function TEntityUsuario.Logar: Boolean;
 var
   UsuarioDto: TUsuarioDto;
-  RepositoryUsuario: TRepositoryUsuario;
   HashSenha: String;
 begin
-  RepositoryUsuario := TRepositoryUsuario.Create;
+  HashSenha := THashMD5.GetHashString(Self.FSenha);
+  UsuarioDto := FRepository.Logar(Self.FNome, HashSenha);
   try
-    HashSenha := THashMD5.GetHashString(Self.FSenha);
-    UsuarioDto := RepositoryUsuario.Logar(Self.FNome, HashSenha);
-    try
-      SetUsuarioLogado(UsuarioDto);
-      Result := True;
-    finally
-      UsuarioDto.Free;
-    end;
+    SetUsuarioLogado(UsuarioDto);
+    Result := True;
   finally
-    RepositoryUsuario.Free;
+    UsuarioDto.Free;
   end;
 end;
 
