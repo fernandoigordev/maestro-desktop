@@ -60,11 +60,15 @@ var
   UsuarioDto: TUsuarioDto;
   HashSenha: String;
 begin
+  Result := False;
   HashSenha := THashMD5.GetHashString(Self.FSenha);
   UsuarioDto := FRepository.Logar(Self.FNome, HashSenha);
   try
-    SetUsuarioLogado(UsuarioDto);
-    Result := True;
+    if UsuarioDto.Id > 0 then
+    begin
+      SetUsuarioLogado(UsuarioDto);
+      Result := True;
+    end;
   finally
     UsuarioDto.Free;
   end;

@@ -1,31 +1,38 @@
 unit Controller.Login;
 
 interface
+uses
+  Repository.Usuario.Interfaces;
 
 type
   TControllerLogin = class
   private
-
+    FRepositoryUsuario: IRepositoryUsuario;
   protected
 
   public
     function Logar(AUsuario, ASenha: String): Boolean;
+
+    constructor Create(ARepositoryUsuario: IRepositoryUsuario);
   end;
 
 implementation
 
 uses
-  Entity.Usuario, Repository.Usuario.Interfaces, Repository.Usuario;
+  Entity.Usuario;
 
 { TControllerLogin }
+
+constructor TControllerLogin.Create(ARepositoryUsuario: IRepositoryUsuario);
+begin
+  FRepositoryUsuario := ARepositoryUsuario;
+end;
 
 function TControllerLogin.Logar(AUsuario, ASenha: String): Boolean;
 var
   EntityUsuario: TEntityUsuario;
-  RepositoryUsuario: IRepositoryUsuario;
 begin
-  RepositoryUsuario := TRepositoryUsuario.Create;
-  EntityUsuario := TEntityUsuario.Create(RepositoryUsuario);
+  EntityUsuario := TEntityUsuario.Create(FRepositoryUsuario);
   try
     Result := EntityUsuario
                 .Nome(AUsuario)

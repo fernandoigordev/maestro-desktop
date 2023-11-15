@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{77E2B9E4-974E-41A9-AAA5-DA83AFBDE31B}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="maestro-front\maestro_front.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="maestro-front\TesteUnitario\maestro_front_teste_unitario.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="maestro_front">
+        <MSBuild Projects="maestro-front\maestro_front.dproj"/>
+    </Target>
+    <Target Name="maestro_front:Clean">
+        <MSBuild Projects="maestro-front\maestro_front.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="maestro_front:Make">
+        <MSBuild Projects="maestro-front\maestro_front.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="maestro_front_teste_unitario">
+        <MSBuild Projects="maestro-front\TesteUnitario\maestro_front_teste_unitario.dproj"/>
+    </Target>
+    <Target Name="maestro_front_teste_unitario:Clean">
+        <MSBuild Projects="maestro-front\TesteUnitario\maestro_front_teste_unitario.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="maestro_front_teste_unitario:Make">
+        <MSBuild Projects="maestro-front\TesteUnitario\maestro_front_teste_unitario.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="maestro_front;maestro_front_teste_unitario"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="maestro_front:Clean;maestro_front_teste_unitario:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="maestro_front:Make;maestro_front_teste_unitario:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

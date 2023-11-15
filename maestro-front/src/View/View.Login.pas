@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
   FMX.Objects, FMX.StdCtrls, FMX.Controls.Presentation, FMX.Edit, FMX.Effects,
-  Controller.Login;
+  Controller.Login, Repository.Usuario.Interfaces, Repository.Usuario;
 
 type
   TViewLogin = class(TForm)
@@ -32,6 +32,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure SpeedButtonEntrarClick(Sender: TObject);
   private
+    FRepositoryUsuario: IRepositoryUsuario;
     FControllerLogin: TControllerLogin;
     { Private declarations }
   public
@@ -49,7 +50,8 @@ implementation
 
 procedure TViewLogin.FormCreate(Sender: TObject);
 begin
-  FControllerLogin := TControllerLogin.Create;
+  FRepositoryUsuario := TRepositoryUsuario.Create;
+  FControllerLogin := TControllerLogin.Create(FRepositoryUsuario);
 end;
 
 procedure TViewLogin.FormDestroy(Sender: TObject);
