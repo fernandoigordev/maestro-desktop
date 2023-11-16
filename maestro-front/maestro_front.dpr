@@ -9,12 +9,18 @@ uses
   Entity.Usuario in 'src\Entity\Entity.Usuario.pas',
   Dto.Usuario in 'src\Dto\Dto.Usuario.pas',
   Repository.Usuario in 'src\Repository\Usuario\Repository.Usuario.pas',
-  Repository.Usuario.Interfaces in 'src\Repository\Usuario\Repository.Usuario.Interfaces.pas';
+  Repository.Usuario.Interfaces in 'src\Repository\Usuario\Repository.Usuario.Interfaces.pas',
+  Entity.Connection in 'src\Entity\Entity.Connection.pas' {EntityConnection: TDataModule};
 
 {$R *.res}
 
 begin
   Application.Initialize;
+
+  TEntityConnection
+    .GetInstance
+    .ExecutarMigrations;
+
   Application.CreateForm(TViewLogin, ViewLogin);
   Application.Run;
 end.
