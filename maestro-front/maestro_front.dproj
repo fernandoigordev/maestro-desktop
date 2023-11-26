@@ -181,6 +181,17 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="src\Entity\Entity.Migration.pas"/>
+        <DCCReference Include="src\Utils\Factory\Utils.Factory.DataSet.pas"/>
+        <DCCReference Include="src\Repository\Migration\Repository.Migration.Interfaces.pas"/>
+        <DCCReference Include="src\Repository\Migration\Repository.Migration.pas"/>
+        <DCCReference Include="src\Dto\Dto.Migration.pas"/>
+        <DCCReference Include="src\View\View.Splash.pas">
+            <Form>ViewSplash</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="src\Controller\Controller.Splash.pas"/>
+        <DCCReference Include="src\Utils\Observer\Utils.Observer.Migration.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

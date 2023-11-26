@@ -1,0 +1,23 @@
+object ViewSplash: TViewSplash
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = Single
+  ClientHeight = 480
+  ClientWidth = 640
+  Fill.Color = claGray
+  Fill.Kind = Solid
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object LabelLogMigration: TLabel
+    Position.X = 264.000000000000000000
+    Position.Y = 232.000000000000000000
+    Text = 'LabelLogMigration'
+    TabOrder = 0
+  end
+end

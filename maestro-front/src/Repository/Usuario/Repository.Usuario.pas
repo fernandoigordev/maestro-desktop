@@ -15,9 +15,8 @@ type
 implementation
 
 uses
-  Entity.Connection,
-
-  FireDAC.Comp.Client, FireDAC.DApt, FireDAC.Comp.DataSet;
+  FireDAC.Comp.Client, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Stan.Param,
+  Utils.Factory.DataSet;
 
 { TRepositoryUsuario }
 
@@ -38,10 +37,8 @@ var
 begin
   Result := TUsuarioDto.Create;
   try
-    Query := TFDQuery.Create(nil);
+    Query := GetQuery(GetSqlLogar);
     try
-      Query.Connection := TEntityConnection.GetInstance.FDConnection;
-      Query.SQL.Text := GetSqlLogar;
       Query.ParamByName('NOME').AsString := AUsuario;
       Query.ParamByName('SENHA').AsString := Senha;
       Query.Open;

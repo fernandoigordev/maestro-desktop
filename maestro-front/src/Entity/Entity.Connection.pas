@@ -23,8 +23,6 @@ type
     procedure ConfigurarConexao;
   public
     Class function GetInstance: TEntityConnection;
-
-    procedure ExecutarMigrations;
   end;
 
 implementation
@@ -40,11 +38,6 @@ uses
 procedure TEntityConnection.DataModuleCreate(Sender: TObject);
 begin
   ConfigurarConexao;
-end;
-
-procedure TEntityConnection.ExecutarMigrations;
-begin
-//  Executar Migrations
 end;
 
 class function TEntityConnection.GetInstance: TEntityConnection;
