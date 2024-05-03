@@ -24,12 +24,7 @@ uses
 
 begin
   Application.Initialize;
-
-//  TEntityConnection
-//    .GetInstance
-//    .ExecutarMigrations;
-
-//  Application.CreateForm(TViewLogin, ViewLogin);
-  Application.CreateForm(TViewSplash, ViewSplash);
+  if TViewSplash.IniciarSistema then
+    Application.CreateForm(TViewLogin, ViewLogin);
   Application.Run;
 end.
