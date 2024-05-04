@@ -106,7 +106,7 @@ begin
   Result := 'CREATE TABLE IF NOT EXISTS PUBLIC.MIGRATION ( ' +
             ' ID INT4 NOT NULL, ' +
             ' DESCRICAO VARCHAR(100) NOT NULL, ' +
-            ' DATA_EXECUCAO TIMESTAMP NOT NULL, ' +
+            ' DATAEXECUCAO TIMESTAMP NOT NULL, ' +
             ' CONSTRAINT MIGRATION_PK PRIMARY KEY (ID) ' +
             ');';
 end;
@@ -116,7 +116,7 @@ begin
   Result := 'CREATE TABLE IF NOT EXISTS PUBLIC.MIGRATION_LOG ( ' +
             ' ID INT4 NOT NULL, ' +
             ' DESCRICAO VARCHAR(100) NOT NULL, ' +
-            ' DATA_EXECUCAO TIMESTAMP NOT NULL, ' +
+            ' DATAEXECUCAO TIMESTAMP NOT NULL, ' +
             ' STATUS INT4 NOT NULL, ' +
             ' CONSTRAINT MIGRATION_LOG_PK PRIMARY KEY (ID) ' +
             ');';
@@ -124,12 +124,12 @@ end;
 
 function TRepositoryMigration.GetSqlGravarMigration: String;
 begin
-  Result := 'INSERT INTO MIGRATION(ID, DESCRICAO, DATA_EXECUCAO) VALUES(:ID, :DESCRICAO, :DATA_EXECUCAO)';
+  Result := 'INSERT INTO MIGRATION(ID, DESCRICAO, DATAEXECUCAO) VALUES(:ID, :DESCRICAO, :DATAEXECUCAO)';
 end;
 
 function TRepositoryMigration.GetSqlLog: String;
 begin
-  Result := 'INSERT INTO MIGRATION_LOG(ID, DESCRICAO, DATA_EXECUCAO, STATUS) VALUES(:ID, :DESCRICAO, :DATA_EXECUCAO, :STATUS)';
+  Result := 'INSERT INTO MIGRATION_LOG(ID, DESCRICAO, DATAEXECUCAO, STATUS) VALUES(:ID, :DESCRICAO, :DATAEXECUCAO, :STATUS)';
 end;
 
 function TRepositoryMigration.GetSqlMigrationExecutadas: String;
@@ -145,7 +145,7 @@ begin
   try
     QueryMigration.ParamByName('ID').AsInteger := AMigrationItem.Id;
     QueryMigration.ParamByName('DESCRICAO').AsString := AMigrationItem.Descricao;
-    QueryMigration.ParamByName('DATA_EXECUCAO').AsDateTime := AMigrationItem.DataExecucao;
+    QueryMigration.ParamByName('DATAEXECUCAO').AsDateTime := AMigrationItem.DataExecucao;
     QueryMigration.ParamByName('STATUS').AsInteger := Integer(AMigrationItem.Status);
     QueryMigration.ExecSQL;
   finally
@@ -161,7 +161,7 @@ begin
   try
     QueryMigration.ParamByName('ID').AsInteger := AMigrationItem.Id;
     QueryMigration.ParamByName('DESCRICAO').AsString := AMigrationItem.Descricao;
-    QueryMigration.ParamByName('DATA_EXECUCAO').AsDateTime := AMigrationItem.DataExecucao;
+    QueryMigration.ParamByName('DATAEXECUCAO').AsDateTime := AMigrationItem.DataExecucao;
     QueryMigration.ExecSQL;
   finally
     QueryMigration.Free;
