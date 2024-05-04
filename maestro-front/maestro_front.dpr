@@ -23,8 +23,10 @@ uses
 {$R *.res}
 
 begin
+  ReportMemoryLeaksOnShutdown := True;
+
   Application.Initialize;
-  if TViewSplash.IniciarSistema then
-    Application.CreateForm(TViewLogin, ViewLogin);
+  TViewSplash.IniciarSistema;
+  Application.CreateForm(TViewLogin, ViewLogin);
   Application.Run;
 end.

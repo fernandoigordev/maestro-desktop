@@ -51,6 +51,8 @@ type
     public
       constructor Create(ARepository: IRepositoryMigration);
       destructor Destroy;override;
+
+      function QuantidadeMigrationExecutar: Integer;
   end;
 
 implementation
@@ -107,7 +109,7 @@ begin
                       procedure
                       begin
                         Self.NotificarObservadores(IdMigration.ToString);
-                        Sleep(1000);
+                        Sleep(200);
                       end
                      );
         MigrationDto := TMigrationDto.Create;
@@ -133,6 +135,17 @@ begin
 end;
 
 
+function TEntityMigration.QuantidadeMigrationExecutar: Integer;
+var
+  Item: TEntityMigrationItem;
+begin
+  Result := 0;
+
+  for Item in FMigrationItens do
+    if (Item.GetId > 0) and (FListaMigrationExecutadas.IndexOf(Item.GetId.ToString) = -1) then
+      Inc(Result)
+end;
+
 { TEntityMigrationItem }
 
 function TEntityMigrationItem.GetId: Integer;
@@ -150,7 +163,7 @@ end;
 
 function TMigration_1.SqlExcute: String;
 begin
-  Result := 'CREATE TABLE PUBLIC.TIPO_USUARIO ( ' +
+  Result := 'CREATE TABLE TIPOUSUARIO ( ' +
             ' ID INT4 NOT NULL GENERATED ALWAYS AS IDENTITY, ' +
             ' DESCRICAO VARCHAR(100) NOT NULL, ' +
             ' CONSTRAINT "TIPOUSUARIO_PKEY" PRIMARY KEY (ID) ' +
@@ -160,34 +173,34 @@ end;
 
 function TMigration_1.SqlRolback: String;
 begin
-  Result := 'DROP TABLE IF EXISTS PUBLIC.TIPO_USUARIO;';
+  Result := 'DROP TABLE IF EXISTS TIPOUSUARIO;';
 end;
 
 { TMigration_2 }
 
 function TMigration_2.SqlExcute: String;
 begin
-  Result := 'CREATE TABLE PUBLIC.USUARIO ( ' +
+  Result := 'CREATE TABLE USUARIO ( ' +
             ' ID INT4 NOT NULL, ' +
             ' NOME VARCHAR(100) NOT NULL, ' +
             ' FOTO VARCHAR(300) NULL, ' +
             ' SENHA VARCHAR(200) NOT NULL, ' +
-            ' TIPO_USUARIO_ID INT4 NOT NULL, ' +
+            ' TIPOUSUARIO_ID INT4 NOT NULL, ' +
             ' CONSTRAINT USUARIO_PK PRIMARY KEY (ID), ' +
-            ' CONSTRAINT USUARIO_TIPO_USUARIO_FK FOREIGN KEY (TIPO_USUARIO_ID) REFERENCES PUBLIC.TIPO_USUARIO(ID) ' +
+            ' CONSTRAINT USUARIO_TIPO_USUARIO_FK FOREIGN KEY (TIPOUSUARIO_ID) REFERENCES TIPOUSUARIO(ID) ' +
             ');';
 end;
 
 function TMigration_2.SqlRolback: String;
 begin
-  Result := 'DROP TABLE IF EXISTS PUBLIC.USUARIO;';
+  Result := 'DROP TABLE IF EXISTS USUARIO;';
 end;
 
 { TMigration_3 }
 
 function TMigration_3.SqlExcute: String;
 begin
-  Result := 'CREATE TABLE PUBLIC.CARGO ( ' +
+  Result := 'CREATE TABLE CARGO ( ' +
             ' ID INT4 NOT NULL, ' +
             ' DESCRICAO VARCHAR(100) NOT NULL, ' +
             ' CONSTRAINT CARGO_PK PRIMARY KEY (ID) ' +
@@ -196,27 +209,27 @@ end;
 
 function TMigration_3.SqlRolback: String;
 begin
-  Result := 'DROP TABLE IF EXISTS PUBLIC.CARGO;';
+  Result := 'DROP TABLE IF EXISTS CARGO;';
 end;
 
 { TMigration_4 }
 
 function TMigration_4.SqlExcute: String;
 begin
-  Result := 'CREATE TABLE PUBLIC.FUNCIONARIO ( ' +
+  Result := 'CREATE TABLE FUNCIONARIO ( ' +
             ' ID INT4 NOT NULL, ' +
             ' NOME VARCHAR(100) NOT NULL, ' +
             ' CARGO_ID INT4 NOT NULL, ' +
             ' USUARIO_ID INT4 NOT NULL, ' +
             ' CONSTRAINT FUNCIONARIO_PK PRIMARY KEY (ID), ' +
-            ' CONSTRAINT FUNCIONARIO_CARGO_ID_FK FOREIGN KEY (CARGO_ID) REFERENCES PUBLIC.CARGO(ID), ' +
-            ' CONSTRAINT FUNCIONARIO_USUARIO_ID_FK FOREIGN KEY (USUARIO_ID) REFERENCES PUBLIC.USUARIO(ID) ' +
+            ' CONSTRAINT FUNCIONARIO_CARGO_ID_FK FOREIGN KEY (CARGO_ID) REFERENCES CARGO(ID), ' +
+            ' CONSTRAINT FUNCIONARIO_USUARIO_ID_FK FOREIGN KEY (USUARIO_ID) REFERENCES USUARIO(ID) ' +
             ');';
 end;
 
 function TMigration_4.SqlRolback: String;
 begin
-  Result := 'DROP TABLE IF EXISTS PUBLIC.FUNCIONARIO;';
+  Result := 'DROP TABLE IF EXISTS FUNCIONARIO;';
 end;
 
 end.

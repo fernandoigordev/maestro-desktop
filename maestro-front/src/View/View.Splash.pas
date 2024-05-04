@@ -14,8 +14,7 @@ type
     LayoutRodape: TLayout;
     LayoutPrincipal: TLayout;
     ImageLogo: TImage;
-    TextNomeSistem: TText;
-    ProgressBar1: TProgressBar;
+    ProgressBarMigration: TProgressBar;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -23,7 +22,7 @@ type
     procedure ExecutarMigrations;
     procedure AtualizarObservador(ATexto: String);
   public
-    Class function IniciarSistema: Boolean;
+    Class procedure IniciarSistema;
   end;
 
 implementation
@@ -46,20 +45,22 @@ begin
   FControllerSplash.Free;
 end;
 
-class function TViewSplash.IniciarSistema: Boolean;
+class procedure TViewSplash.IniciarSistema;
 var
   ViewSplash: TViewSplash;
+  TotalQuantidadeMigrationExecutar: Integer;
 begin
-  Result := True;
   ViewSplash := TViewSplash.Create(Application);
   try
-    try
+    TotalQuantidadeMigrationExecutar := ViewSplash.FControllerSplash.QuantidadeMigrationExecutar;
+
+    if TotalQuantidadeMigrationExecutar > 0 then
+    begin
+      ViewSplash.ProgressBarMigration.Value := 0;
+      ViewSplash.ProgressBarMigration.Max := TotalQuantidadeMigrationExecutar;
       ViewSplash.Show;
       ViewSplash.ExecutarMigrations;
       ViewSplash.Close;
-    except
-      Result := False;
-      raise
     end;
   finally
     ViewSplash.Free;
@@ -68,7 +69,8 @@ end;
 
 procedure TViewSplash.AtualizarObservador(ATexto: String);
 begin
-  LabelLogMigration.Text := ATexto;
+  ProgressBarMigration.Value := ProgressBarMigration.Value + 1;
+  LabelLogMigration.Text := Concat('Executando atualização ', ATexto);
   Application.ProcessMessages;
 end;
 

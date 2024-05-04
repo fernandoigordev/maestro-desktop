@@ -2,37 +2,49 @@ unit Controller.Splash;
 
 interface
 uses
-  Utils.Observer.Migration;
+  Utils.Observer.Migration, Repository.Migration.Interfaces,
+  Repository.Migration, Entity.Migration;
 
 type
   TControllerSplash = class
   private
-
+    RepositoryMigration: IRepositoryMigration;
+    FEntityMigration: TEntityMigration;
   protected
 
   public
+    constructor Create;
+    destructor Destroy;override;
     procedure ExecutarMigration(AObservadorMigration: IObservadorMigration);
+    function QuantidadeMigrationExecutar: Integer;
+
   end;
 
 implementation
-uses
-  Repository.Migration.Interfaces, Repository.Migration, Entity.Migration;
 
 { TControllerSplash }
 
-procedure TControllerSplash.ExecutarMigration(AObservadorMigration: IObservadorMigration);
-var
-  RepositoryMigration: IRepositoryMigration;
-  EntityMigration: TEntityMigration;
+constructor TControllerSplash.Create;
 begin
   RepositoryMigration := TRepositoryMigration.Create;
-  EntityMigration := TEntityMigration.Create(RepositoryMigration);
-  try
-    EntityMigration.AddObservador(AObservadorMigration);
-    EntityMigration.Execute;
-  finally
-    EntityMigration.Free;
-  end;
+  FEntityMigration := TEntityMigration.Create(RepositoryMigration);
+end;
+
+destructor TControllerSplash.Destroy;
+begin
+  FEntityMigration.Free;
+  inherited;
+end;
+
+procedure TControllerSplash.ExecutarMigration(AObservadorMigration: IObservadorMigration);
+begin
+  FEntityMigration.AddObservador(AObservadorMigration);
+  FEntityMigration.Execute;
+end;
+
+function TControllerSplash.QuantidadeMigrationExecutar: Integer;
+begin
+  Result := FEntityMigration.QuantidadeMigrationExecutar;
 end;
 
 end.
