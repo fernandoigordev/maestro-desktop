@@ -22,7 +22,7 @@ uses
 
 function TRepositoryUsuario.GetSqlLogar: String;
 begin
-  Result := 'SELECT U.ID, U.NOME, C.DESCRICAO , U.FOTO ' +
+  Result := 'SELECT U.ID, F.NOME, C.DESCRICAO , U.FOTO ' +
             '  FROM USUARIO U ' +
             '  JOIN FUNCIONARIO F ' +
             '    ON U.ID = F.USUARIO_ID ' +

@@ -38,6 +38,30 @@ type
       function SqlRolback: String;override;
   end;
 
+  TMigration_5 = class(TEntityMigrationItem)
+    public
+      function SqlExcute: String;override;
+      function SqlRolback: String;override;
+  end;
+
+  TMigration_6 = class(TEntityMigrationItem)
+    public
+      function SqlExcute: String;override;
+      function SqlRolback: String;override;
+  end;
+
+  TMigration_7 = class(TEntityMigrationItem)
+    public
+      function SqlExcute: String;override;
+      function SqlRolback: String;override;
+  end;
+
+  TMigration_8 = class(TEntityMigrationItem)
+    public
+      function SqlExcute: String;override;
+      function SqlRolback: String;override;
+  end;
+
 
   TEntityMigration = class(TPublisherMigration)
     private
@@ -68,6 +92,10 @@ begin
   FMigrationItens.Add(TMigration_2.Create);
   FMigrationItens.Add(TMigration_3.Create);
   FMigrationItens.Add(TMigration_4.Create);
+  FMigrationItens.Add(TMigration_5.Create);
+  FMigrationItens.Add(TMigration_6.Create);
+  FMigrationItens.Add(TMigration_7.Create);
+  FMigrationItens.Add(TMigration_8.Create);
 end;
 
 constructor TEntityMigration.Create(ARepository: IRepositoryMigration);
@@ -129,6 +157,7 @@ begin
       on E: Exception do
       begin
         ShowMessage(Concat('Erro ao executar Migration: ', Item.ClassName));
+        Exit;
       end;
     end;
   end;
@@ -164,7 +193,7 @@ end;
 function TMigration_1.SqlExcute: String;
 begin
   Result := 'CREATE TABLE TIPOUSUARIO ( ' +
-            ' ID INT4 NOT NULL GENERATED ALWAYS AS IDENTITY, ' +
+            ' ID INT4 NOT NULL, ' +
             ' DESCRICAO VARCHAR(100) NOT NULL, ' +
             ' CONSTRAINT "TIPOUSUARIO_PKEY" PRIMARY KEY (ID) ' +
             ');';
@@ -230,6 +259,54 @@ end;
 function TMigration_4.SqlRolback: String;
 begin
   Result := 'DROP TABLE IF EXISTS FUNCIONARIO;';
+end;
+
+{ TMigration_5 }
+
+function TMigration_5.SqlExcute: String;
+begin
+  Result := 'INSERT INTO TIPOUSUARIO(ID, DESCRICAO) VALUES(1, ''Administrador'')';
+end;
+
+function TMigration_5.SqlRolback: String;
+begin
+  Result := 'DELETE FROM TIPOUSUARIO WHERE ID = 1';
+end;
+
+{ TMigration_6 }
+
+function TMigration_6.SqlExcute: String;
+begin
+  Result := 'INSERT INTO USUARIO(ID, NOME, SENHA, TIPOUSUARIO_ID) VALUES(1, ''admin'', ''e6e061838856bf47e1de730719fb2609'', 1)';
+end;
+
+function TMigration_6.SqlRolback: String;
+begin
+  Result := 'DELETE FROM USUARIO WHERE ID = 1';
+end;
+
+{ TMigration_7 }
+
+function TMigration_7.SqlExcute: String;
+begin
+  Result := 'INSERT INTO CARGO(ID, DESCRICAO) VALUES(1, ''Suporte'')';
+end;
+
+function TMigration_7.SqlRolback: String;
+begin
+  Result := 'DELETE FROM CARGO WHERE ID = 1';
+end;
+
+{ TMigration_8 }
+
+function TMigration_8.SqlExcute: String;
+begin
+  Result := 'INSERT INTO FUNCIONARIO(ID, NOME, CARGO_ID, USUARIO_ID) VALUES(1, ''Administrador'', 1, 1)';
+end;
+
+function TMigration_8.SqlRolback: String;
+begin
+  Result := 'DELETE FROM FUNCIONARIO WHERE ID = 1';
 end;
 
 end.

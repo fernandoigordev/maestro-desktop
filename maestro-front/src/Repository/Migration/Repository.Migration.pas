@@ -114,7 +114,8 @@ end;
 function TRepositoryMigration.GetSqlCriarTabelaMigrationLog: String;
 begin
   Result := 'CREATE TABLE IF NOT EXISTS PUBLIC.MIGRATION_LOG ( ' +
-            ' ID INT4 NOT NULL, ' +
+            ' ID INT4 NOT NULL GENERATED ALWAYS AS IDENTITY, ' +
+            ' MIGRATION_ID INT4 NOT NULL, ' +
             ' DESCRICAO VARCHAR(100) NOT NULL, ' +
             ' DATAEXECUCAO TIMESTAMP NOT NULL, ' +
             ' STATUS INT4 NOT NULL, ' +
@@ -129,7 +130,7 @@ end;
 
 function TRepositoryMigration.GetSqlLog: String;
 begin
-  Result := 'INSERT INTO MIGRATION_LOG(ID, DESCRICAO, DATAEXECUCAO, STATUS) VALUES(:ID, :DESCRICAO, :DATAEXECUCAO, :STATUS)';
+  Result := 'INSERT INTO MIGRATION_LOG(MIGRATION_ID, DESCRICAO, DATAEXECUCAO, STATUS) VALUES(:MIGRATION_ID, :DESCRICAO, :DATAEXECUCAO, :STATUS)';
 end;
 
 function TRepositoryMigration.GetSqlMigrationExecutadas: String;
@@ -143,7 +144,7 @@ var
 begin
   QueryMigration := GetQuery(GetSqlLog);
   try
-    QueryMigration.ParamByName('ID').AsInteger := AMigrationItem.Id;
+    QueryMigration.ParamByName('MIGRATION_ID').AsInteger := AMigrationItem.Id;
     QueryMigration.ParamByName('DESCRICAO').AsString := AMigrationItem.Descricao;
     QueryMigration.ParamByName('DATAEXECUCAO').AsDateTime := AMigrationItem.DataExecucao;
     QueryMigration.ParamByName('STATUS').AsInteger := Integer(AMigrationItem.Status);
